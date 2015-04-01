@@ -63,7 +63,7 @@ function getAuthInfoFromUrl() {
   if (window.location.hash) {
     var authResponse = window.location.hash.substring(1);
     var authInfo = JSON.parse(
-      '{"' + authResponse.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+      '{' + authResponse.replace(/([^=]+)=([^&]+)&?/g, '"$1":"$2",').slice(0,-1) + '}',
       function(key, value) { return key === "" ? value : decodeURIComponent(value); });
     return authInfo;
   }
@@ -150,7 +150,7 @@ function showLoginButton() {
   loginText.href = "#";
   loginText.id = "loginText";
   loginText.onclick = challengeForAuth;
-  loginText.innerText = "[sign in]";
+  loginText.innerText = loginText.textContent = "[sign in]";
   document.body.insertBefore(loginText, document.body.children[0]);
 }
 
